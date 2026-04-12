@@ -74,7 +74,7 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Design
 
-The aesthetic is inspired by Maria Sibylla Merian's specimen plates, Audubon's birds, 19th century comparative charts, and USGS topographic maps. The design system is documented in [CLAUDE.md](CLAUDE.md).
+The aesthetic is inspired by Edward Tufte's data density principles, Maria Sibylla Merian's specimen plates, Audubon's birds, 19th century comparative charts, and USGS topographic maps. The design system is documented in [CLAUDE.md](CLAUDE.md).
 
 Key principles:
 - **The illustration is the data.** Every visual element encodes real information.
