@@ -129,7 +129,7 @@ export function EcologicalConnections() {
           title: "Shorebird habitat",
           body: (
             <>
-              Sacramento R. running{" "}
+              Sacramento River running{" "}
               <span className="font-mono tabular-nums font-semibold">{pctAbove}%</span>{" "}
               above 7-day mean. Delta wetlands expanding — favorable for shorebird feeding.
             </>
