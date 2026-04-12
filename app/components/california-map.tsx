@@ -5,7 +5,7 @@ import useSWR from "swr";
 import { TIDE_STATIONS, RIVER_SITES } from "@/lib/stations";
 import { useHighlight } from "@/lib/highlight-context";
 import { formatTideHeight, formatTideTime, formatNumber } from "@/lib/format";
-import type { TidesResponse, TidePrediction, RiversResponse, MonarchResponse } from "@/lib/types";
+import type { TidesResponse, TidePrediction, RiversResponse, MonarchResponse, CetaceansResponse } from "@/lib/types";
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
@@ -216,6 +216,7 @@ export function CaliforniaMap() {
   const { data: tidesData } = useSWR<TidesResponse>("/api/tides", fetcher, { refreshInterval: 360000 });
   const { data: riversData } = useSWR<RiversResponse>("/api/rivers", fetcher, { refreshInterval: 900000 });
   const { data: monarchData } = useSWR<MonarchResponse>("/api/monarchs", fetcher, { refreshInterval: 3600000 });
+  const { data: cetaceanData } = useSWR<CetaceansResponse>("/api/cetaceans", fetcher, { refreshInterval: 3600000 });
 
   const outlinePath = toOutlinePath(CA_BOUNDARY);
   const maxCfs = riversData ? Math.max(...riversData.sites.map((s) => s.currentFlow ?? 0), 1) : 1;
@@ -486,6 +487,19 @@ export function CaliforniaMap() {
         })}
 
 
+        {/* Cetacean sightings — always visible along the coast, blue-gray */}
+        {cetaceanData?.observations?.map((obs, i) => {
+          const [cx, cy] = project(obs.lng, obs.lat);
+          return (
+            <circle
+              key={`cetacean-${i}`}
+              cx={cx} cy={cy} r={2.5}
+              fill="#6b7280"
+              opacity={0.45}
+            />
+          );
+        })}
+
         {/* Monarch observations — current month, always visible as orange dots */}
         {monarchData?.monthlyCounts && !focusedSpecies && (() => {
           // Show current month's observations when not hovering a specific month
@@ -578,6 +592,12 @@ export function CaliforniaMap() {
               }
               return "Monarch sightings";
             })()}
+          </span>
+          <span className="flex items-center gap-1.5">
+            <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
+              <circle cx="5" cy="5" r="3" fill="#6b7280" opacity="0.45" />
+            </svg>
+            Cetaceans
           </span>
       </div>
     </div>

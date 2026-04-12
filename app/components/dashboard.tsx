@@ -6,6 +6,7 @@ import { RiverGrid } from "./river-grid";
 import { BirdSightings } from "./bird-sightings";
 import { EcologicalConnections } from "./ecological-connections";
 import { MonarchMigration } from "./monarch-migration";
+import { Cetaceans } from "./cetaceans";
 import { ReservoirLevels } from "./reservoir-levels";
 import { PollinatorPlate } from "./pollinator-plate";
 import { SectionWash } from "./section-wash";
@@ -73,7 +74,12 @@ export function Dashboard() {
         <MonarchMigration />
       </SectionWash>
 
-      {/* 6. Pollinators & Host Plants */}
+      {/* 6. Cetaceans */}
+      <SectionWash texture="/textures/wash-blue.png" opacity={0.10}>
+        <Cetaceans />
+      </SectionWash>
+
+      {/* 7. Pollinators & Host Plants */}
       <SectionWash texture="/textures/wash-green.png" opacity={0.10}>
         <div className="relative">
           <SectionIllustration

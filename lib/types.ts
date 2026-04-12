@@ -89,6 +89,26 @@ export interface MonarchResponse {
   fetchedAt: string;
 }
 
+// Cetaceans (iNaturalist)
+export interface CetaceanSpecies {
+  name: string;
+  scientificName: string;
+  count: number;
+}
+
+export interface CetaceanObservation {
+  lat: number;
+  lng: number;
+  species: string;
+}
+
+export interface CetaceansResponse {
+  totalObservations: number;
+  species: CetaceanSpecies[];
+  observations: CetaceanObservation[];
+  fetchedAt: string;
+}
+
 // Reservoirs (CDEC)
 export interface ReservoirData {
   id: string;
