@@ -174,7 +174,7 @@ export function MonarchMigration() {
     <section>
       <SectionHeader>Monarch Migration</SectionHeader>
 
-      <div className="mt-4 flex items-start gap-4">
+      <div className="mt-4 flex items-center gap-4">
         <Image
           src="/illustrations/butterflies/monarch.png"
           alt="Monarch butterfly"
