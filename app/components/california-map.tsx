@@ -336,120 +336,118 @@ export function CaliforniaMap() {
           strokeLinejoin="round" strokeLinecap="round"
         />
 
-        {/* Sierra Nevada hatch lines — density driven by snowpack */}
+        {/* Sierra Nevada hatch lines — split into 3 zones with independent hover */}
         {(() => {
-          // Sierra crest points from south to north [lng, lat]
-          const sierraCrest: [number, number][] = [
-            [-118.30, 36.50], [-118.40, 36.80], [-118.50, 37.10],
-            [-118.70, 37.40], [-118.90, 37.70], [-119.20, 37.90],
-            [-119.50, 38.10], [-119.80, 38.30], [-120.00, 38.60],
-            [-120.10, 38.80], [-120.20, 39.00], [-120.20, 39.20],
-            [-120.30, 39.50], [-120.40, 39.70], [-120.50, 39.90],
-            [-120.60, 40.10],
+          const sierraZones: {
+            name: string;
+            points: [number, number][];
+          }[] = [
+            {
+              name: "Southern Sierra",
+              points: [
+                [-118.30,36.50],[-118.40,36.80],[-118.50,37.10],
+                [-118.70,37.40],[-118.90,37.70],
+              ],
+            },
+            {
+              name: "Central Sierra",
+              points: [
+                [-118.90,37.70],[-119.20,37.90],[-119.50,38.10],
+                [-119.80,38.30],[-120.00,38.60],[-120.10,38.80],
+              ],
+            },
+            {
+              name: "Northern Sierra",
+              points: [
+                [-120.10,38.80],[-120.20,39.00],[-120.20,39.20],
+                [-120.30,39.50],[-120.40,39.70],[-120.50,39.90],
+                [-120.60,40.10],
+              ],
+            },
           ];
 
-          // Determine hatch density from snowpack data
-          // More SWE = more hatch lines, darker
-          const avgSwe = snowpackData?.statewideAvgSwe ?? 2;
-          const maxSwe = 15; // inches
-          const intensity = Math.min(avgSwe / maxSwe, 1);
-          const hatchCount = Math.max(3, Math.round(3 + intensity * 4)); // 3-7 hatches per segment
-          const hatchOpacity = 0.2 + intensity * 0.25; // 0.2-0.45
+          const maxSwe = 15;
 
-          const hatches: { x1: number; y1: number; x2: number; y2: number }[] = [];
+          return sierraZones.map((zone) => {
+            const zoneData = snowpackData?.zones?.find((z) => z.name === zone.name);
+            const swe = zoneData?.avgSweInches ?? 2;
+            const intensity = Math.min(swe / maxSwe, 1);
+            const hatchCount = Math.max(3, Math.round(3 + intensity * 4));
+            const baseOpacity = 0.2 + intensity * 0.25;
+            const isHovered = hoveredStation === zone.name;
 
-          for (let i = 0; i < sierraCrest.length - 1; i++) {
-            const [lng1, lat1] = sierraCrest[i];
-            const [lng2, lat2] = sierraCrest[i + 1];
-            const [sx1, sy1] = project(lng1, lat1);
-            const [sx2, sy2] = project(lng2, lat2);
+            const hatches: { x1: number; y1: number; x2: number; y2: number }[] = [];
 
-            // Direction along the crest
-            const dx = sx2 - sx1;
-            const dy = sy2 - sy1;
-            const len = Math.sqrt(dx * dx + dy * dy);
-            if (len < 1) continue;
+            for (let i = 0; i < zone.points.length - 1; i++) {
+              const [lng1, lat1] = zone.points[i];
+              const [lng2, lat2] = zone.points[i + 1];
+              const [sx1, sy1] = project(lng1, lat1);
+              const [sx2, sy2] = project(lng2, lat2);
+              const dx = sx2 - sx1;
+              const dy = sy2 - sy1;
+              const len = Math.sqrt(dx * dx + dy * dy);
+              if (len < 1) continue;
+              const px = -dy / len;
+              const py = dx / len;
 
-            // Perpendicular direction (for hatch strokes)
-            const px = -dy / len;
-            const py = dx / len;
-
-            // Generate hatch marks along this segment
-            for (let h = 0; h < hatchCount; h++) {
-              const t = (h + 0.5) / hatchCount;
-              const cx = sx1 + dx * t;
-              const cy = sy1 + dy * t;
-              const hatchLen = 6 + intensity * 6; // 6-12px
-
-              // Slight jitter for natural feel
-              const jx = (Math.sin(i * 7 + h * 13) * 2);
-              const jy = (Math.cos(i * 11 + h * 7) * 2);
-
-              hatches.push({
-                x1: cx + px * hatchLen + jx,
-                y1: cy + py * hatchLen + jy,
-                x2: cx - px * hatchLen * 0.3 + jx,
-                y2: cy - py * hatchLen * 0.3 + jy,
-              });
-            }
-          }
-
-          const isHovered = hoveredStation === "Sierra Snowpack";
-
-          // Build an invisible wide path along the crest for hover targeting
-          const crestPath = sierraCrest.map(([lng, lat], idx) => {
-            const [x, y] = project(lng, lat);
-            return `${idx === 0 ? "M" : "L"}${x.toFixed(1)},${y.toFixed(1)}`;
-          }).join(" ");
-
-          return (
-            <g>
-              {/* Invisible wide hit area along the Sierra crest */}
-              <path
-                d={crestPath}
-                fill="none"
-                stroke="transparent"
-                strokeWidth={24}
-                onMouseEnter={() => {
-                  setHoveredStation("Sierra Snowpack");
-                  setTooltipData({
-                    name: "Sierra Nevada Snowpack",
-                    line1: `${avgSwe} inches SWE average`,
-                    line2: snowpackData?.zones
-                      ?.map((z) => `${z.name}: ${z.avgSweInches}″`)
-                      .join(" · ") ?? "",
-                  });
-                }}
-                onMouseLeave={hideTooltip}
-                cursor="default"
-              />
-              <g
-                onMouseEnter={() => {
-                  setHoveredStation("Sierra Snowpack");
-                  setTooltipData({
-                    name: "Sierra Nevada Snowpack",
-                  line1: `${avgSwe} inches SWE average`,
-                  line2: snowpackData?.zones
-                    ?.map((z) => `${z.name}: ${z.avgSweInches}″`)
-                    .join(" · ") ?? "",
+              for (let h = 0; h < hatchCount; h++) {
+                const t = (h + 0.5) / hatchCount;
+                const cx = sx1 + dx * t;
+                const cy = sy1 + dy * t;
+                const hatchLen = 6 + intensity * 6;
+                const jx = Math.sin(i * 7 + h * 13) * 2;
+                const jy = Math.cos(i * 11 + h * 7) * 2;
+                hatches.push({
+                  x1: cx + px * hatchLen + jx,
+                  y1: cy + py * hatchLen + jy,
+                  x2: cx - px * hatchLen * 0.3 + jx,
+                  y2: cy - py * hatchLen * 0.3 + jy,
                 });
-              }}
-              onMouseLeave={hideTooltip}
-              cursor="default"
-            >
-              {hatches.map((h, i) => (
-                <line
-                  key={`hatch-${i}`}
-                  x1={h.x1} y1={h.y1} x2={h.x2} y2={h.y2}
-                  stroke="#78716c"
-                  strokeWidth={1.2}
-                  strokeLinecap="round"
-                  opacity={isHovered ? hatchOpacity + 0.1 : hatchOpacity}
+              }
+            }
+
+            const crestPath = zone.points.map(([lng, lat], idx) => {
+              const [x, y] = project(lng, lat);
+              return `${idx === 0 ? "M" : "L"}${x.toFixed(1)},${y.toFixed(1)}`;
+            }).join(" ");
+
+            const peakStr = zoneData?.peakSweInches
+              ? `Peak ${zoneData.peakSweInches}″${zoneData.peakMonth ? ` in ${zoneData.peakMonth}` : ""}`
+              : "";
+
+            return (
+              <g key={zone.name}>
+                {/* Wide filled polygon covering the entire hatched area */}
+                <path
+                  d={crestPath}
+                  fill="none" stroke="transparent" strokeWidth={50}
+                  strokeLinejoin="round" strokeLinecap="round"
+                  onMouseEnter={() => {
+                    setHoveredStation(zone.name);
+                    setTooltipData({
+                      name: zone.name,
+                      line1: `${swe} inches of water in snowpack`,
+                      line2: peakStr,
+                    });
+                  }}
+                  onMouseLeave={hideTooltip}
+                  cursor="default"
                 />
-              ))}
+                {hatches.map((h, i) => (
+                  <line
+                    key={`hatch-${zone.name}-${i}`}
+                    x1={h.x1} y1={h.y1} x2={h.x2} y2={h.y2}
+                    stroke={isHovered ? "#44403c" : "#78716c"}
+                    strokeWidth={isHovered ? 1.8 : 1.2}
+                    strokeLinecap="round"
+                    opacity={isHovered ? baseOpacity + 0.25 : baseOpacity}
+                    className="transition-all duration-150"
+                    pointerEvents="none"
+                  />
+                ))}
               </g>
-            </g>
-          );
+            );
+          });
         })()}
 
         {/* All 7 river lines — flow-encoded width + color, dashed flow animation */}
@@ -667,19 +665,23 @@ export function CaliforniaMap() {
       </svg>
 
       {/* Tooltip */}
-      {tooltipData && (
+      {tooltipData && (() => {
+        const containerW = containerRef.current?.clientWidth ?? 300;
+        const isRightHalf = mousePos.x > containerW / 2;
+        return (
         <div
           className="absolute pointer-events-none z-30 bg-white/95 border border-stone-200 px-2.5 py-1.5 text-xs max-w-[200px]"
-          style={{
-            left: Math.min(mousePos.x + 12, (containerRef.current?.clientWidth ?? 300) - 180),
-            top: mousePos.y - 10,
-          }}
+          style={isRightHalf
+            ? { right: containerW - mousePos.x + 12, top: mousePos.y - 10 }
+            : { left: Math.min(mousePos.x + 12, containerW - 180), top: mousePos.y - 10 }
+          }
         >
           <div className="font-medium text-stone-800">{tooltipData.name}</div>
           <div className="font-mono tabular-nums text-stone-700">{tooltipData.line1}</div>
           {tooltipData.line2 && <div className="text-stone-400">{tooltipData.line2}</div>}
         </div>
-      )}
+        );
+      })()}
 
       {/* Legend */}
       <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-stone-400 justify-center">

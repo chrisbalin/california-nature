@@ -8,6 +8,7 @@ import { EcologicalConnections } from "./ecological-connections";
 import { MonarchMigration } from "./monarch-migration";
 import { Cetaceans } from "./cetaceans";
 import { ReservoirLevels } from "./reservoir-levels";
+import { SnowpackStrip } from "./snowpack-strip";
 import { PollinatorPlate } from "./pollinator-plate";
 import { SectionWash } from "./section-wash";
 
@@ -59,8 +60,13 @@ export function Dashboard() {
         <TideStrip />
       </SectionWash>
 
-      {/* 3. Rivers */}
-      <SectionWash texture="/textures/wash-neutral.png" opacity={0.14}>
+      {/* 3. Sierra Snowpack */}
+      <SectionWash texture="/textures/wash-neutral.png" opacity={0.08}>
+        <SnowpackStrip />
+      </SectionWash>
+
+      {/* 4. Rivers */}
+      <SectionWash texture="/textures/wash-neutral.png" opacity={0.14} rotate={180}>
         <RiverGrid />
       </SectionWash>
 

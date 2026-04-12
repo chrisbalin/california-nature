@@ -89,7 +89,7 @@ export function RiverGrid() {
     return (
       <section>
         <SectionHeader>Rivers</SectionHeader>
-        <p className="text-xs text-stone-400 mt-1">Current discharge, cubic feet per second · 7-day trend</p>
+        <p className="text-xs text-stone-400 mt-1">Current flow, cubic feet per second · 7-day trend</p>
         <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {Array.from({ length: 9 }).map((_, i) => <SkeletonRiverCard key={i} />)}
         </div>
@@ -109,7 +109,7 @@ export function RiverGrid() {
   return (
     <section>
       <SectionHeader>Rivers</SectionHeader>
-      <p className="text-xs text-stone-400 mt-1">Current discharge, cubic feet per second · 7-day trend</p>
+      <p className="text-xs text-stone-400 mt-1">Current flow, cubic feet per second · 7-day trend</p>
       <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {sorted.map((site) => {
           const values = site.discharge.map((r) => parseFloat(r.value));

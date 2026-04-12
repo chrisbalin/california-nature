@@ -93,8 +93,10 @@ export interface MonarchResponse {
 export interface SnowpackZone {
   name: string; // "Northern Sierra", "Central Sierra", "Southern Sierra"
   avgSweInches: number;
+  peakSweInches: number | null;
+  peakMonth: string | null; // "Apr 2025"
   stationCount: number;
-  lat: number; // zone centroid for map positioning
+  lat: number;
   lng: number;
 }
 

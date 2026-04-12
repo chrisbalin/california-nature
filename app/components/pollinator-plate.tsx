@@ -42,7 +42,7 @@ function SpeciesEntry({
       ? findIllustration(species.name, [BUTTERFLY_ILLUSTRATIONS])
       : findIllustration(species.name, [FLOWER_ILLUSTRATIONS]);
 
-  const color = type === "plant" ? "#8b5cf6" : "#f43f5e";
+  const color = type === "plant" ? "#15803d" : "#f43f5e"; // green-700 for plants, rose-500 for pollinators
 
   function handleHover() {
     const obs = findObservations(observations, species.name);

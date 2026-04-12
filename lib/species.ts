@@ -56,6 +56,11 @@ export const BEE_ILLUSTRATIONS: Record<string, SpeciesEntry> = {
     scientificName: "Apis mellifera",
     illustration: "/illustrations/bees/western-honey-bee.png",
   },
+  "Black-tailed Bumble Bee": {
+    commonName: "Black-tailed Bumble Bee",
+    scientificName: "Bombus melanopygus",
+    illustration: "/illustrations/bees/black-tailed-bumble-bee.png",
+  },
   "Valley Carpenter Bee": {
     commonName: "Valley Carpenter Bee",
     scientificName: "Xylocopa sonorina",
@@ -91,6 +96,11 @@ export const BUTTERFLY_ILLUSTRATIONS: Record<string, SpeciesEntry> = {
     scientificName: "Battus philenor",
     illustration: "/illustrations/butterflies/pipevine-swallowtail.png",
   },
+  "Mourning Cloak": {
+    commonName: "Mourning Cloak",
+    scientificName: "Nymphalis antiopa",
+    illustration: "/illustrations/butterflies/mourning-cloak.png",
+  },
   "Gray Buckeye": {
     commonName: "Gray Buckeye",
     scientificName: "Junonia grisea",
@@ -110,6 +120,16 @@ export const FLOWER_ILLUSTRATIONS: Record<string, SpeciesEntry> = {
     commonName: "Lupine",
     scientificName: "Lupinus sp.",
     illustration: "/illustrations/flowers/lupine.png",
+  },
+  "Rose Clover": {
+    commonName: "Rose Clover",
+    scientificName: "Trifolium hirtum",
+    illustration: "/illustrations/flowers/rose-clover.png",
+  },
+  "Creosote Bush": {
+    commonName: "Creosote Bush",
+    scientificName: "Larrea tridentata",
+    illustration: "/illustrations/flowers/creosote-bush.png",
   },
   "orange bush monkeyflower": {
     commonName: "Orange Bush Monkeyflower",
