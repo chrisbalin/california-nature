@@ -73,7 +73,8 @@ async function fetchMigrationData(): Promise<MigrationResponse> {
   }
 
   const stats = results.reverse();
-  const today = stats[stats.length - 1] ?? null;
+  // Use the most recent day with actual data (today might not be aggregated yet)
+  const today = [...stats].reverse().find((d) => d.numSpecies > 0) ?? stats[stats.length - 1] ?? null;
   const last7 = stats.slice(-7);
   const avg7d = last7.length > 0
     ? Math.round(last7.reduce((s, d) => s + d.numSpecies, 0) / last7.length)
