@@ -125,13 +125,14 @@ export function BirdSightings() {
       <SectionHeader>Birds</SectionHeader>
 
       {/* Statewide stats */}
-      {today && (
+      {today && today.numSpecies > 0 && (
         <div className="mt-3">
           <p className="text-sm text-stone-600">
             <span className="font-mono tabular-nums font-semibold text-stone-800">
               {formatNumber(today.numSpecies)}
             </span>{" "}
-            species reported across California today
+            species reported across California{" "}
+            {today.date === new Date().toISOString().split("T")[0] ? "today" : "yesterday"}
           </p>
           <p className="text-xs text-stone-400">
             <span className="font-mono tabular-nums">{formatNumber(today.numChecklists)}</span> checklists
