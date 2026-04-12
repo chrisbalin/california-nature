@@ -80,7 +80,7 @@ function SpeciesEntry({
               alt=""
               width={40}
               height={48}
-              className="object-contain opacity-50"
+              className="object-contain"
               aria-hidden="true"
             />
           )}
