@@ -1,65 +1,110 @@
 import Image from "next/image";
+import { Dashboard } from "./components/dashboard";
+import { CaliforniaMap } from "./components/california-map";
+import { ConditionsBar } from "./components/conditions-bar";
+import { HighlightProvider } from "@/lib/highlight-context";
 
 export default function Home() {
+  const today = new Date().toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
+    <main className="max-w-7xl mx-auto px-6 py-10 md:px-8 relative">
+      {/* California poppy — state flower, fixed in bottom-left */}
+      <div
+        className="fixed bottom-12 left-8 pointer-events-none z-0 hidden xl:block"
+        aria-hidden="true"
+        style={{ opacity: 0.55, transform: "rotate(-6deg)" }}
+      >
         <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+          src="/illustrations/flowers/california-poppy.png"
+          alt=""
+          width={140}
+          height={140}
+          className="object-contain"
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+      </div>
+      <header className="mb-10 relative">
+        <div
+          className="absolute inset-x-[-24px] inset-y-[-12px] pointer-events-none"
+          aria-hidden="true"
+          style={{
+            backgroundImage: "url(/textures/wash-amber.png)",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            opacity: 0.12,
+          }}
+        />
+        <div className="relative flex items-start gap-4 -ml-2">
+          {/* Yerba buena — Clinopodium douglasii, the plant SF was named after */}
+          <Image
+            src="/illustrations/flowers/yerba-buena.png"
+            alt=""
+            width={75}
+            height={150}
+            className="flex-shrink-0 object-contain illustration-diecut"
+            style={{ opacity: 0.7 }}
+            aria-hidden="true"
+          />
+          <div className="pt-1">
+            <h1 className="text-sm uppercase tracking-[0.35em] text-stone-500">
+              California Nature Dashboard
+            </h1>
+            <p className="mt-3 text-sm text-stone-400 italic">
+              A living survey of the state&apos;s ecosystems
+            </p>
+            <time className="block mt-2 text-xs text-stone-400 font-mono tabular-nums">
+              {today}
+            </time>
+          </div>
+        </div>
+      </header>
+
+      <HighlightProvider>
+        {/* Two-column layout: map (sticky) | data sections */}
+        <div className="lg:flex lg:gap-10">
+          {/* Left column — map, sticky on desktop */}
+          <aside className="lg:w-[37%] lg:flex-shrink-0 mb-10 lg:mb-0">
+            <div className="lg:sticky lg:top-8">
+              <ConditionsBar />
+              <CaliforniaMap />
+            </div>
+          </aside>
+
+          {/* Right column — all data sections */}
+          <div className="lg:flex-1 min-w-0">
+            <Dashboard />
+          </div>
+        </div>
+      </HighlightProvider>
+
+      <footer className="mt-12 pt-6 text-center">
+        <div className="mx-auto max-w-md border-t border-stone-200 pt-6" />
+        <p className="text-xs text-stone-400">
+          Data:{" "}
+          <a href="https://tidesandcurrents.noaa.gov" className="underline decoration-stone-300 hover:text-stone-600">NOAA Tides &amp; Currents</a>
+          {" · "}
+          <a href="https://waterservices.usgs.gov" className="underline decoration-stone-300 hover:text-stone-600">USGS Water Services</a>
+          {" · "}
+          <a href="https://ebird.org" className="underline decoration-stone-300 hover:text-stone-600">eBird</a>
+          {" · "}
+          <a href="https://www.inaturalist.org" className="underline decoration-stone-300 hover:text-stone-600">iNaturalist</a>
+          {" · "}
+          <a href="https://open-meteo.com" className="underline decoration-stone-300 hover:text-stone-600">Open-Meteo</a>
+        </p>
+        <div className="mt-3 text-xs text-stone-400 space-y-0.5">
+          <p>
+            A field study by{" "}
+            <a href="https://madeleineesmith.com" target="_blank" rel="noopener noreferrer" className="text-stone-500 hover:text-stone-700 underline underline-offset-2">Madeleine Smith</a>
+            {" "}and{" "}
+            <a href="https://chrisbalin.com" target="_blank" rel="noopener noreferrer" className="text-stone-500 hover:text-stone-700 underline underline-offset-2">Chris Balin</a>
           </p>
+          <p>Illustrations generated with Midjourney · Built with Claude Code</p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+      </footer>
+    </main>
   );
 }
