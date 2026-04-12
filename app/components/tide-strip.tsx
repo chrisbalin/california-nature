@@ -87,23 +87,31 @@ export function TideStrip() {
               <div className="text-xs text-stone-500 uppercase tracking-[0.15em]">
                 {station.name}
               </div>
-              <div className="mt-1.5 mx-[-2px]">
-                <Sparkline
-                  data={values}
-                  width={114}
-                  height={24}
-                  strokeColor="#0284c7"
-                  showEndDot
-                />
-              </div>
-              {currentH && (
-                <div className="font-mono tabular-nums text-sm font-semibold text-stone-800 mt-1">
-                  {currentH}
-                </div>
-              )}
-              {next && (
-                <div className="text-xs text-stone-400">
-                  {next.type === "H" ? "High" : "Low"} {formatTideHeight(next.v)} at {formatTideTime(next.t)}
+              {values.length >= 2 ? (
+                <>
+                  <div className="mt-1.5 mx-[-2px]">
+                    <Sparkline
+                      data={values}
+                      width={114}
+                      height={24}
+                      strokeColor="#0284c7"
+                      showEndDot
+                    />
+                  </div>
+                  {currentH && (
+                    <div className="font-mono tabular-nums text-sm font-semibold text-stone-800 mt-1">
+                      {currentH}
+                    </div>
+                  )}
+                  {next && (
+                    <div className="text-xs text-stone-400">
+                      {next.type === "H" ? "High" : "Low"} {formatTideHeight(next.v)} at {formatTideTime(next.t)}
+                    </div>
+                  )}
+                </>
+              ) : (
+                <div className="mt-1.5 text-xs text-stone-400 italic">
+                  No data
                 </div>
               )}
             </div>
