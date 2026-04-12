@@ -119,7 +119,12 @@ async function fetchMonarchData(): Promise<MonarchResponse> {
 
 export async function GET() {
   try {
-    const data = await cached("monarchs", 3600, fetchMonarchData);
+    const data = await cached(
+      "monarchs",
+      3600,
+      fetchMonarchData,
+      (d) => !d.monthlyCounts || d.monthlyCounts.length === 0
+    );
     return NextResponse.json(data, {
       headers: { "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=300" },
     });

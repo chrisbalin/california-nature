@@ -87,9 +87,17 @@ async function fetchMigrationData(): Promise<MigrationResponse> {
 
 export async function GET() {
   try {
-    const data = await cached("migration", 21600, fetchMigrationData);
+    const data = await cached(
+      "migration",
+      21600,
+      fetchMigrationData,
+      (d) => !d.today || d.today.numSpecies === 0
+    );
+    // Short cache if data is empty (retry sooner), long cache if valid
+    const isValid = data.today && data.today.numSpecies > 0;
+    const maxAge = isValid ? 21600 : 60;
     return NextResponse.json(data, {
-      headers: { "Cache-Control": "public, s-maxage=21600, stale-while-revalidate=3600" },
+      headers: { "Cache-Control": `public, s-maxage=${maxAge}, stale-while-revalidate=60` },
     });
   } catch (error) {
     console.error("Migration API error:", error);

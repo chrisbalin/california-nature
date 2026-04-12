@@ -137,7 +137,12 @@ async function fetchPollinatorData(): Promise<PollinatorsResponse> {
 
 export async function GET() {
   try {
-    const data = await cached("pollinators", 3600, fetchPollinatorData);
+    const data = await cached(
+      "pollinators",
+      3600,
+      fetchPollinatorData,
+      (d) => !d.summary || d.summary.beeCount === 0
+    );
     return NextResponse.json(data, {
       headers: {
         "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=60",
