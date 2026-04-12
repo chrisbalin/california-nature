@@ -75,7 +75,7 @@ export function Dashboard() {
       </SectionWash>
 
       {/* 6. Cetaceans */}
-      <SectionWash texture="/textures/wash-blue.png" opacity={0.10}>
+      <SectionWash texture="/textures/wash-blue.png" opacity={0.10} rotate={180}>
         <Cetaceans />
       </SectionWash>
 
