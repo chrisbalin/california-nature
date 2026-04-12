@@ -3,9 +3,9 @@ import { fetchWithRetry } from "@/lib/api";
 import { cached } from "@/lib/cache";
 import type { MigrationResponse } from "@/lib/types";
 
-// Short ISR revalidation so failed/empty responses don't persist for hours.
+// Force dynamic so Vercel never edge-caches stale empty responses.
 // The in-memory cache handles the long TTL (6h) for valid data.
-export const revalidate = 120;
+export const dynamic = "force-dynamic";
 
 const EBIRD_BASE = "https://api.ebird.org/v2";
 
