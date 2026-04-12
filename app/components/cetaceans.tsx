@@ -51,7 +51,7 @@ export function Cetaceans() {
     if (matching.length === 0) return;
     setFocusedSpecies({
       label: speciesName,
-      color: "#6b7280", // gray-500 — subtle, marine
+      color: "#7c3aed", // violet-600
       observations: matching.map((o) => ({ lat: o.lat, lng: o.lng })),
     });
   }

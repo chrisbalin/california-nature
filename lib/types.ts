@@ -89,6 +89,21 @@ export interface MonarchResponse {
   fetchedAt: string;
 }
 
+// Snowpack
+export interface SnowpackZone {
+  name: string; // "Northern Sierra", "Central Sierra", "Southern Sierra"
+  avgSweInches: number;
+  stationCount: number;
+  lat: number; // zone centroid for map positioning
+  lng: number;
+}
+
+export interface SnowpackResponse {
+  zones: SnowpackZone[];
+  statewideAvgSwe: number;
+  fetchedAt: string;
+}
+
 // Cetaceans (iNaturalist)
 export interface CetaceanSpecies {
   name: string;

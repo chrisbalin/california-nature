@@ -5,7 +5,7 @@ import useSWR from "swr";
 import { TIDE_STATIONS, RIVER_SITES } from "@/lib/stations";
 import { useHighlight } from "@/lib/highlight-context";
 import { formatTideHeight, formatTideTime, formatNumber } from "@/lib/format";
-import type { TidesResponse, TidePrediction, RiversResponse, MonarchResponse, CetaceansResponse } from "@/lib/types";
+import type { TidesResponse, TidePrediction, RiversResponse, MonarchResponse, CetaceansResponse, SnowpackResponse } from "@/lib/types";
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
@@ -217,6 +217,7 @@ export function CaliforniaMap() {
   const { data: riversData } = useSWR<RiversResponse>("/api/rivers", fetcher, { refreshInterval: 900000 });
   const { data: monarchData } = useSWR<MonarchResponse>("/api/monarchs", fetcher, { refreshInterval: 3600000 });
   const { data: cetaceanData } = useSWR<CetaceansResponse>("/api/cetaceans", fetcher, { refreshInterval: 3600000 });
+  const { data: snowpackData } = useSWR<SnowpackResponse>("/api/snowpack", fetcher, { refreshInterval: 3600000 });
 
   const outlinePath = toOutlinePath(CA_BOUNDARY);
   const maxCfs = riversData ? Math.max(...riversData.sites.map((s) => s.currentFlow ?? 0), 1) : 1;
@@ -334,6 +335,122 @@ export function CaliforniaMap() {
           fill="#f5f5f4" stroke="#44403c" strokeWidth="1.5"
           strokeLinejoin="round" strokeLinecap="round"
         />
+
+        {/* Sierra Nevada hatch lines — density driven by snowpack */}
+        {(() => {
+          // Sierra crest points from south to north [lng, lat]
+          const sierraCrest: [number, number][] = [
+            [-118.30, 36.50], [-118.40, 36.80], [-118.50, 37.10],
+            [-118.70, 37.40], [-118.90, 37.70], [-119.20, 37.90],
+            [-119.50, 38.10], [-119.80, 38.30], [-120.00, 38.60],
+            [-120.10, 38.80], [-120.20, 39.00], [-120.20, 39.20],
+            [-120.30, 39.50], [-120.40, 39.70], [-120.50, 39.90],
+            [-120.60, 40.10],
+          ];
+
+          // Determine hatch density from snowpack data
+          // More SWE = more hatch lines, darker
+          const avgSwe = snowpackData?.statewideAvgSwe ?? 2;
+          const maxSwe = 15; // inches
+          const intensity = Math.min(avgSwe / maxSwe, 1);
+          const hatchCount = Math.max(3, Math.round(3 + intensity * 4)); // 3-7 hatches per segment
+          const hatchOpacity = 0.2 + intensity * 0.25; // 0.2-0.45
+
+          const hatches: { x1: number; y1: number; x2: number; y2: number }[] = [];
+
+          for (let i = 0; i < sierraCrest.length - 1; i++) {
+            const [lng1, lat1] = sierraCrest[i];
+            const [lng2, lat2] = sierraCrest[i + 1];
+            const [sx1, sy1] = project(lng1, lat1);
+            const [sx2, sy2] = project(lng2, lat2);
+
+            // Direction along the crest
+            const dx = sx2 - sx1;
+            const dy = sy2 - sy1;
+            const len = Math.sqrt(dx * dx + dy * dy);
+            if (len < 1) continue;
+
+            // Perpendicular direction (for hatch strokes)
+            const px = -dy / len;
+            const py = dx / len;
+
+            // Generate hatch marks along this segment
+            for (let h = 0; h < hatchCount; h++) {
+              const t = (h + 0.5) / hatchCount;
+              const cx = sx1 + dx * t;
+              const cy = sy1 + dy * t;
+              const hatchLen = 6 + intensity * 6; // 6-12px
+
+              // Slight jitter for natural feel
+              const jx = (Math.sin(i * 7 + h * 13) * 2);
+              const jy = (Math.cos(i * 11 + h * 7) * 2);
+
+              hatches.push({
+                x1: cx + px * hatchLen + jx,
+                y1: cy + py * hatchLen + jy,
+                x2: cx - px * hatchLen * 0.3 + jx,
+                y2: cy - py * hatchLen * 0.3 + jy,
+              });
+            }
+          }
+
+          const isHovered = hoveredStation === "Sierra Snowpack";
+
+          // Build an invisible wide path along the crest for hover targeting
+          const crestPath = sierraCrest.map(([lng, lat], idx) => {
+            const [x, y] = project(lng, lat);
+            return `${idx === 0 ? "M" : "L"}${x.toFixed(1)},${y.toFixed(1)}`;
+          }).join(" ");
+
+          return (
+            <g>
+              {/* Invisible wide hit area along the Sierra crest */}
+              <path
+                d={crestPath}
+                fill="none"
+                stroke="transparent"
+                strokeWidth={24}
+                onMouseEnter={() => {
+                  setHoveredStation("Sierra Snowpack");
+                  setTooltipData({
+                    name: "Sierra Nevada Snowpack",
+                    line1: `${avgSwe} inches SWE average`,
+                    line2: snowpackData?.zones
+                      ?.map((z) => `${z.name}: ${z.avgSweInches}″`)
+                      .join(" · ") ?? "",
+                  });
+                }}
+                onMouseLeave={hideTooltip}
+                cursor="default"
+              />
+              <g
+                onMouseEnter={() => {
+                  setHoveredStation("Sierra Snowpack");
+                  setTooltipData({
+                    name: "Sierra Nevada Snowpack",
+                  line1: `${avgSwe} inches SWE average`,
+                  line2: snowpackData?.zones
+                    ?.map((z) => `${z.name}: ${z.avgSweInches}″`)
+                    .join(" · ") ?? "",
+                });
+              }}
+              onMouseLeave={hideTooltip}
+              cursor="default"
+            >
+              {hatches.map((h, i) => (
+                <line
+                  key={`hatch-${i}`}
+                  x1={h.x1} y1={h.y1} x2={h.x2} y2={h.y2}
+                  stroke="#78716c"
+                  strokeWidth={1.2}
+                  strokeLinecap="round"
+                  opacity={isHovered ? hatchOpacity + 0.1 : hatchOpacity}
+                />
+              ))}
+              </g>
+            </g>
+          );
+        })()}
 
         {/* All 7 river lines — flow-encoded width + color, dashed flow animation */}
         {RIVER_SITES.map((site) => {
@@ -487,15 +604,15 @@ export function CaliforniaMap() {
         })}
 
 
-        {/* Cetacean sightings — always visible along the coast, blue-gray */}
-        {cetaceanData?.observations?.map((obs, i) => {
+        {/* Cetacean sightings — hide when a specific species is focused */}
+        {cetaceanData?.observations && !focusedSpecies && cetaceanData.observations.map((obs, i) => {
           const [cx, cy] = project(obs.lng, obs.lat);
           return (
             <circle
               key={`cetacean-${i}`}
               cx={cx} cy={cy} r={2.5}
-              fill="#6b7280"
-              opacity={0.45}
+              fill="#7c3aed"
+              opacity={0.5}
             />
           );
         })}
@@ -595,7 +712,7 @@ export function CaliforniaMap() {
           </span>
           <span className="flex items-center gap-1.5">
             <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
-              <circle cx="5" cy="5" r="3" fill="#6b7280" opacity="0.45" />
+              <circle cx="5" cy="5" r="3" fill="#7c3aed" opacity="0.5" />
             </svg>
             Cetaceans
           </span>

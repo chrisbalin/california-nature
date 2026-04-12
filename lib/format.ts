@@ -59,9 +59,12 @@ export function formatTemp(f: number): string {
 
 /**
  * Title case: "orange bush monkeyflower" → "Orange Bush Monkeyflower"
+ * Also fixes possessive capitalization: "Risso'S" → "Risso's"
  */
 export function titleCase(s: string): string {
-  return s.replace(/\b\w/g, (c) => c.toUpperCase());
+  return s
+    .replace(/\b\w/g, (c) => c.toUpperCase())
+    .replace(/'S\b/g, "'s");
 }
 
 /**

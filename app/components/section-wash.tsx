@@ -15,7 +15,7 @@ export function SectionWash({
   children: React.ReactNode;
 }) {
   return (
-    <div className="relative overflow-hidden">
+    <div className="relative">
       <div
         className="absolute inset-x-[-16px] inset-y-[-8px] pointer-events-none"
         aria-hidden="true"
