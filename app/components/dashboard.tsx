@@ -76,7 +76,16 @@ export function Dashboard() {
 
       {/* 6. Cetaceans */}
       <SectionWash texture="/textures/wash-blue.png" opacity={0.10} rotate={180}>
-        <Cetaceans />
+        <div className="relative">
+          <SectionIllustration
+            src="/illustrations/cetaceans/humpback-whale.png"
+            size={100}
+            opacity={0.4}
+            rotate={-5}
+            className="hidden lg:block -right-2 -top-1"
+          />
+          <Cetaceans />
+        </div>
       </SectionWash>
 
       {/* 7. Pollinators & Host Plants */}

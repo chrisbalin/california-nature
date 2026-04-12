@@ -104,7 +104,7 @@ export function EcologicalConnections() {
   if (isLoading) {
     return (
       <section>
-        <SectionHeader>Ecological Connections</SectionHeader>
+        <SectionHeader illustration="/illustrations/birds/snowy-plover.png">Ecological Connections</SectionHeader>
         <div className="mt-4 space-y-4">
           <div className="h-3.5 w-48 bg-stone-200/50 rounded-sm animate-pulse" />
           <div className="h-12 w-full bg-stone-200/50 rounded-sm animate-pulse" />
@@ -297,7 +297,7 @@ export function EcologicalConnections() {
 
   return (
     <section>
-      <SectionHeader>Ecological Connections</SectionHeader>
+      <SectionHeader illustration="/illustrations/birds/snowy-plover.png">Ecological Connections</SectionHeader>
       <div className="mt-4 space-y-5">
         {entries.map((entry) => (
           <div key={entry.title}>

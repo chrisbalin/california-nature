@@ -20,7 +20,7 @@ export function Cetaceans() {
   if (error) {
     return (
       <section>
-        <SectionHeader>Cetaceans</SectionHeader>
+        <SectionHeader illustration="/illustrations/cetaceans/humpback-whale.png">Cetaceans</SectionHeader>
         <p className="text-sm text-stone-400 mt-3">Unable to load cetacean data.</p>
       </section>
     );
@@ -29,7 +29,7 @@ export function Cetaceans() {
   if (isLoading || !data) {
     return (
       <section>
-        <SectionHeader>Cetaceans</SectionHeader>
+        <SectionHeader illustration="/illustrations/cetaceans/humpback-whale.png">Cetaceans</SectionHeader>
         <div className="mt-3 space-y-1.5">
           <SkeletonLine width="w-48" />
           <SkeletonLine width="w-32" height="h-2.5" />
@@ -62,7 +62,7 @@ export function Cetaceans() {
 
   return (
     <section>
-      <SectionHeader>Cetaceans</SectionHeader>
+      <SectionHeader illustration="/illustrations/cetaceans/humpback-whale.png">Cetaceans</SectionHeader>
 
       <p className="mt-3 text-sm text-stone-600">
         <span className="font-mono tabular-nums font-semibold text-stone-800">

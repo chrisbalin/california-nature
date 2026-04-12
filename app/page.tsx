@@ -83,6 +83,15 @@ export default function Home() {
 
       <footer className="mt-12 pt-6 text-center">
         <div className="mx-auto max-w-md border-t border-stone-200 pt-6" />
+        <Image
+          src="/illustrations/flowers/california-poppy.png"
+          alt=""
+          width={70}
+          height={70}
+          className="mx-auto mb-4 object-contain xl:hidden"
+          style={{ opacity: 0.5 }}
+          aria-hidden="true"
+        />
         <p className="text-xs text-stone-400">
           Data:{" "}
           <a href="https://tidesandcurrents.noaa.gov" className="underline decoration-stone-300 hover:text-stone-600">NOAA Tides &amp; Currents</a>

@@ -109,7 +109,7 @@ export function PollinatorPlate() {
   if (error) {
     return (
       <section>
-        <SectionHeader>Pollinators &amp; Host Plants</SectionHeader>
+        <SectionHeader illustration="/illustrations/bees/bumblebee-decorative.png">Pollinators &amp; Host Plants</SectionHeader>
         <p className="text-sm text-stone-400 mt-3">Unable to load pollinator data.</p>
       </section>
     );
@@ -118,7 +118,7 @@ export function PollinatorPlate() {
   if (isLoading || !data || !data.summary) {
     return (
       <section>
-        <SectionHeader>Pollinators &amp; Host Plants</SectionHeader>
+        <SectionHeader illustration="/illustrations/bees/bumblebee-decorative.png">Pollinators &amp; Host Plants</SectionHeader>
         <div className="mt-5 space-y-1.5">
           <SkeletonLine width="w-56" />
           <SkeletonLine width="w-32" height="h-2.5" />
@@ -134,7 +134,7 @@ export function PollinatorPlate() {
   if (!summary) {
     return (
       <section>
-        <SectionHeader>Pollinators &amp; Host Plants</SectionHeader>
+        <SectionHeader illustration="/illustrations/bees/bumblebee-decorative.png">Pollinators &amp; Host Plants</SectionHeader>
         <div className="mt-5 space-y-1.5">
           <SkeletonLine width="w-56" />
           <SkeletonLine width="w-32" height="h-2.5" />
@@ -148,7 +148,7 @@ export function PollinatorPlate() {
 
   return (
     <section>
-      <SectionHeader>Pollinators &amp; Host Plants</SectionHeader>
+      <SectionHeader illustration="/illustrations/bees/bumblebee-decorative.png">Pollinators &amp; Host Plants</SectionHeader>
 
       {/* Pollinators sub-section */}
       <div className="mt-5">

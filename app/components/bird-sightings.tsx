@@ -91,7 +91,7 @@ export function BirdSightings() {
   if (error) {
     return (
       <section>
-        <SectionHeader>Birds</SectionHeader>
+        <SectionHeader illustration="/illustrations/birds/rufous-hummingbird.png">Birds</SectionHeader>
         <p className="text-sm text-stone-400 mt-3">Unable to load bird data.</p>
       </section>
     );
@@ -100,7 +100,7 @@ export function BirdSightings() {
   if (isLoading || !data) {
     return (
       <section>
-        <SectionHeader>Birds</SectionHeader>
+        <SectionHeader illustration="/illustrations/birds/rufous-hummingbird.png">Birds</SectionHeader>
         <div className="mt-3"><SkeletonLine width="w-64" /></div>
         <div className="mt-5 space-y-0 divide-y divide-stone-100">
           {Array.from({ length: 3 }).map((_, i) => <SkeletonBirdEntry key={i} />)}
@@ -112,7 +112,7 @@ export function BirdSightings() {
   if (data.error) {
     return (
       <section>
-        <SectionHeader>Birds</SectionHeader>
+        <SectionHeader illustration="/illustrations/birds/rufous-hummingbird.png">Birds</SectionHeader>
         <p className="text-sm text-stone-400 mt-3">
           Add EBIRD_API_KEY to .env.local to see bird data.
         </p>
@@ -122,7 +122,7 @@ export function BirdSightings() {
 
   return (
     <section>
-      <SectionHeader>Birds</SectionHeader>
+      <SectionHeader illustration="/illustrations/birds/rufous-hummingbird.png">Birds</SectionHeader>
 
       {/* Statewide stats */}
       {today && today.numSpecies > 0 && (
