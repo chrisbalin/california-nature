@@ -15,7 +15,7 @@ export default function Home() {
     <main className="max-w-7xl mx-auto px-4 pt-4 pb-10 md:px-8 md:pt-10 relative">
       {/* California poppy — state flower, fixed in bottom-left */}
       <div
-        className="fixed bottom-12 left-8 pointer-events-none z-0 hidden xl:block"
+        className="fixed bottom-0 left-8 pointer-events-none z-0 hidden xl:block"
         aria-hidden="true"
         style={{ opacity: 0.55, transform: "rotate(-6deg)" }}
       >

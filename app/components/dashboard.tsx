@@ -44,7 +44,7 @@ export function Dashboard() {
         <div className="relative">
           <SectionIllustration
             src="/illustrations/birds/snowy-plover.png"
-            size={70}
+            size={90}
             opacity={0.5}
             rotate={-5}
             className="hidden lg:block -right-2 -top-1"
@@ -99,7 +99,7 @@ export function Dashboard() {
         <div className="relative">
           <SectionIllustration
             src="/illustrations/birds/rufous-hummingbird.png"
-            size={65}
+            size={85}
             opacity={0.45}
             rotate={-8}
             className="hidden lg:block -right-2 top-6"
