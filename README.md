@@ -77,7 +77,7 @@ Open [http://localhost:3000](http://localhost:3000).
 The aesthetic is inspired by Edward Tufte's data density principles, Maria Sibylla Merian's specimen plates, Audubon's birds, 19th century comparative charts, and USGS topographic maps. The design system is documented in [CLAUDE.md](CLAUDE.md).
 
 Key principles:
-- **The illustration is the data.** Every visual element encodes real information.
+- **Data visualizations encode real information.** Sparklines, map elements, and observation dots are data-driven. Decorative illustrations frame the page like a naturalist's field journal.
 - **Warm naturalist palette.** Stone-50 paper background, stone-800 ink, sky-600 water, amber for warnings.
 - **Serif typography.** Scientific names always italic. Numbers always monospace.
 - **No chart junk.** Sparklines have no axes, no gridlines, no backgrounds.
