@@ -48,7 +48,17 @@ async function fetchMigrationData(): Promise<MigrationResponse> {
     return { stats: [], today: null, avg7d: 0, fetchedAt: new Date().toISOString() };
   }
 
-  const now = new Date();
+  // Use California time, not UTC, to determine "today"
+  const caFormatter = new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/Los_Angeles",
+    year: "numeric", month: "2-digit", day: "2-digit",
+  });
+  const caParts = caFormatter.formatToParts(new Date());
+  const caYear = parseInt(caParts.find((p) => p.type === "year")!.value);
+  const caMonth = parseInt(caParts.find((p) => p.type === "month")!.value);
+  const caDay = parseInt(caParts.find((p) => p.type === "day")!.value);
+  const now = new Date(caYear, caMonth - 1, caDay);
+
   const days: { y: number; m: number; d: number; date: string }[] = [];
 
   for (let i = 0; i < 30; i++) {
