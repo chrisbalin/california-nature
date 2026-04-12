@@ -102,7 +102,10 @@ export default function Home() {
             {" "}and{" "}
             <a href="https://chrisbalin.com" target="_blank" rel="noopener noreferrer" className="text-stone-500 hover:text-stone-700 underline underline-offset-2">Chris Balin</a>
           </p>
-          <p>Illustrations generated with Midjourney · Built with Claude Code</p>
+          <p>
+            Illustrations generated with Midjourney · Built with Claude Code ·{" "}
+            <a href="https://github.com/chrisbalin/california-nature" target="_blank" rel="noopener noreferrer" className="text-stone-500 hover:text-stone-700 underline underline-offset-2">Source</a>
+          </p>
         </div>
       </footer>
     </main>
