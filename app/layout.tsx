@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "California Nature Dashboard",
   description:
-    "A living survey of California's ecosystems — tides, rivers, birds, pollinators, and weather.",
+    "A living survey of California's ecosystems: tides, rivers, birds, pollinators, and weather.",
 };
 
 export default function RootLayout({
