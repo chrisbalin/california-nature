@@ -87,19 +87,27 @@ async function fetchMigrationData(): Promise<MigrationResponse> {
   };
 }
 
-export async function GET() {
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const forceRefresh = searchParams.get("refresh") === "1";
+
   try {
-    const data = await cached(
-      "migration",
-      21600,
-      fetchMigrationData,
-      (d) => !d.today || d.today.numSpecies === 0
-    );
-    // Short cache if data is empty (retry sooner), long cache if valid
+    const data = forceRefresh
+      ? await fetchMigrationData()
+      : await cached(
+          "migration",
+          21600,
+          fetchMigrationData,
+          (d) => !d.today || d.today.numSpecies === 0
+        );
     const isValid = data.today && data.today.numSpecies > 0;
     const maxAge = isValid ? 21600 : 60;
     return NextResponse.json(data, {
-      headers: { "Cache-Control": `public, s-maxage=${maxAge}, stale-while-revalidate=60` },
+      headers: {
+        "Cache-Control": forceRefresh
+          ? "no-store"
+          : `public, s-maxage=${maxAge}, stale-while-revalidate=60`,
+      },
     });
   } catch (error) {
     console.error("Migration API error:", error);
