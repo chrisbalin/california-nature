@@ -3,7 +3,9 @@ import { fetchWithRetry } from "@/lib/api";
 import { cached } from "@/lib/cache";
 import type { MigrationResponse } from "@/lib/types";
 
-export const revalidate = 21600;
+// Short ISR revalidation so failed/empty responses don't persist for hours.
+// The in-memory cache handles the long TTL (6h) for valid data.
+export const revalidate = 120;
 
 const EBIRD_BASE = "https://api.ebird.org/v2";
 
