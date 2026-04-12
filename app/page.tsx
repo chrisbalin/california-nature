@@ -53,7 +53,7 @@ export default function Home() {
             <h1 className="text-sm uppercase tracking-[0.35em] text-stone-500">
               California Nature Dashboard
             </h1>
-            <p className="mt-1 text-sm text-stone-400 italic">
+            <p className="mt-0 text-sm text-stone-400 italic">
               A living survey of the state&apos;s ecosystems
             </p>
             <time className="block mt-3 text-xs text-stone-400 font-mono tabular-nums">
