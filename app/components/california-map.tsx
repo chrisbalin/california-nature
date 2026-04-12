@@ -562,7 +562,7 @@ export function CaliforniaMap() {
             <svg width="18" height="6" viewBox="0 0 18 6" aria-hidden="true">
               <line x1="0" y1="3" x2="18" y2="3" stroke="#0284c7" strokeWidth="2.5" strokeLinecap="round" opacity="0.55" strokeDasharray="4 2" />
             </svg>
-            River discharge
+            River flow
           </span>
           <span className="flex items-center gap-1.5">
             <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
