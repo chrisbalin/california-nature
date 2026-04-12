@@ -2,7 +2,7 @@
 
 A living survey of California's ecosystems — tides, rivers, birds, pollinators, and weather rendered through the visual language of 19th century scientific illustration.
 
-**Live:** [california-nature.vercel.app](https://california-nature.vercel.app)
+**Live:** [calnature.app](https://www.calnature.app)
 
 ## What it does
 
