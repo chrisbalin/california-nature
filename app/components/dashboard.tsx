@@ -74,7 +74,7 @@ export function Dashboard() {
       </SectionWash>
 
       {/* 6. Pollinators & Host Plants */}
-      <SectionWash texture="/textures/wash-green.png" opacity={0.16}>
+      <SectionWash texture="/textures/wash-green.png" opacity={0.10}>
         <div className="relative">
           <SectionIllustration
             src="/illustrations/bees/bumblebee-decorative.png"
