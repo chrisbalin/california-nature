@@ -2,15 +2,10 @@ import Image from "next/image";
 import { Dashboard } from "./components/dashboard";
 import { CaliforniaMap } from "./components/california-map";
 import { ConditionsBar } from "./components/conditions-bar";
+import { LiveDate } from "./components/live-date";
 import { HighlightProvider } from "@/lib/highlight-context";
 
 export default function Home() {
-  const today = new Date().toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
-
   return (
     <main className="max-w-7xl mx-auto px-4 pt-4 pb-10 md:px-8 md:pt-10 relative">
       {/* California poppy — state flower, fixed in bottom-left */}
@@ -56,9 +51,7 @@ export default function Home() {
             <p className="mt-0 text-sm text-stone-400 italic">
               A living survey of the state&apos;s ecosystems
             </p>
-            <time className="block mt-3 text-xs text-stone-400 font-mono tabular-nums">
-              {today}
-            </time>
+            <LiveDate />
           </div>
         </div>
       </header>
